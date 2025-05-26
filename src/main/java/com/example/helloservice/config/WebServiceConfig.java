@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
+import org.springframework.ws.soap.SoapVersion;
+import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
+import org.springframework.ws.wsdl.wsdl11.Soap12Wsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
@@ -16,19 +19,44 @@ import org.springframework.xml.xsd.XsdSchema;
 public class WebServiceConfig {
 
     @Bean
-    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext ctx) {
+    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet11(ApplicationContext ctx) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(ctx);
         servlet.setTransformWsdlLocations(true);
-        servlet.setDispatchOptionsRequest(true); // Enables HTTP OPTIONS & SOAP 1.2
-        return new ServletRegistrationBean<>(servlet, "/ws/*");
+        return new ServletRegistrationBean<>(servlet, "/services/HelloService/*");
     }
 
-    @Bean(name = "hello")
-    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema schema) {
+    @Bean
+    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet12(ApplicationContext ctx) {
+        MessageDispatcherServlet servlet = new MessageDispatcherServlet();
+        servlet.setApplicationContext(ctx);
+        servlet.setTransformWsdlLocations(true);
+        servlet.setMessageFactory(soap12MessageFactory());
+        return new ServletRegistrationBean<>(servlet, "/services/HelloService12/*");
+    }
+
+    @Bean
+    public SaajSoapMessageFactory soap12MessageFactory() {
+        SaajSoapMessageFactory f = new SaajSoapMessageFactory();
+        f.setSoapVersion(SoapVersion.SOAP_12);
+        return f;
+    }
+
+    @Bean(name = "HelloService")
+    public DefaultWsdl11Definition helloWsdl(XsdSchema schema) {
         DefaultWsdl11Definition def = new DefaultWsdl11Definition();
         def.setPortTypeName("HelloPort");
-        def.setLocationUri("/ws");
+        def.setLocationUri("/services/HelloService");
+        def.setTargetNamespace("http://example.com/hello");
+        def.setSchema(schema);
+        return def;
+    }
+
+    @Bean(name = "HelloService12")
+    public Soap12Wsdl11Definition helloWsdl12(XsdSchema schema) {
+        Soap12Wsdl11Definition def = new Soap12Wsdl11Definition();
+        def.setPortTypeName("HelloPort");
+        def.setLocationUri("/services/HelloService12");
         def.setTargetNamespace("http://example.com/hello");
         def.setSchema(schema);
         return def;
