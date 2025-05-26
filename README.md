@@ -1,6 +1,6 @@
 # Hello Service for WebLogic 14c
 
-This project demonstrates a minimal SOAP web service built with Spring Boot 3 and Apache CXF. The service loads its greeting message from `application.properties` and exposes two endpoints supporting SOAP 1.1 and SOAP 1.2.
+This project demonstrates a minimal SOAP web service built with Spring Boot 2.7.18 and Apache CXF. The service loads its greeting message from `application.properties` and exposes two endpoints supporting SOAP 1.1 and SOAP 1.2.
 
 ## Building
 
