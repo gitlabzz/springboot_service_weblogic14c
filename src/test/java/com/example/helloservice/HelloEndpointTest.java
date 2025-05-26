@@ -31,7 +31,7 @@ class HelloEndpointTest {
         Source requestPayload = new StringSource(
             "<HelloRequest xmlns=\"http://example.com/hello\"><name>Codex</name></HelloRequest>");
         Source expectedResponse = new StringSource(
-            "<HelloResponse xmlns=\"http://example.com/hello\"><greeting>Hello from WebLogic14c Spring?Boot!, Codex!</greeting></HelloResponse>");
+            "<HelloResponse xmlns=\"http://example.com/hello\"><greeting>Hello from WebLogic 14c Spring Boot!, Codex!</greeting></HelloResponse>");
 
         client.sendRequest(withPayload(requestPayload))
               .andExpect(payload(expectedResponse));
