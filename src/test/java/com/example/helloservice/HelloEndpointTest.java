@@ -11,7 +11,6 @@ import org.springframework.ws.test.server.MockWebServiceClient;
 import org.springframework.xml.transform.StringSource;
 
 import static org.springframework.ws.test.server.RequestCreators.withPayload;
-import static org.springframework.ws.test.server.RequestCreators.withUri;
 import static org.springframework.ws.test.server.ResponseMatchers.payload;
 
 @SpringBootTest
@@ -45,7 +44,7 @@ class HelloEndpointTest {
         Source expectedResponse = new StringSource(
             "<HelloResponse xmlns=\"http://example.com/hello\"><greeting>Hello from WebLogic 14c Spring Boot!, Codex!</greeting></HelloResponse>");
 
-        client.sendRequest(withUri("/services/HelloService12").withPayload(requestPayload))
+        client.sendRequest(withPayload(requestPayload))
               .andExpect(payload(expectedResponse));
     }
 }
