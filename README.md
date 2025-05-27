@@ -5,10 +5,16 @@ This project demonstrates a minimal SOAP web service built with Spring Boot 2.7.
 ## Building
 
 ```bash
-mvn package -DskipTests
+./mvnw package -DskipTests
 ```
 
 The build produces `target/hello-service.war` which can be deployed to WebLogic 14c running on JDK 17.
+
+## Running Tests
+
+```bash
+./mvnw test
+```
 
 ## Endpoints
 
