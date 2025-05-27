@@ -15,20 +15,22 @@ import org.springframework.xml.xsd.XsdSchema;
 @Configuration
 public class WebServiceConfig {
 
-    @Bean
-    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet11(ApplicationContext ctx) {
+    private ServletRegistrationBean<MessageDispatcherServlet> createServletRegistration(
+            ApplicationContext ctx, String path) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(ctx);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, "/services/HelloService/*");
+        return new ServletRegistrationBean<>(servlet, path);
+    }
+
+    @Bean
+    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet11(ApplicationContext ctx) {
+        return createServletRegistration(ctx, "/services/HelloService/*");
     }
 
     @Bean
     public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet12(ApplicationContext ctx) {
-        MessageDispatcherServlet servlet = new MessageDispatcherServlet();
-        servlet.setApplicationContext(ctx);
-        servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, "/services/HelloService12/*");
+        return createServletRegistration(ctx, "/services/HelloService12/*");
     }
 
     @Bean(name = "HelloService")
