@@ -118,12 +118,33 @@
                 </executions>
                 <configuration>
                     <packageName>com.example.helloservice.schema</packageName>
-                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                    <clearOutputDir>false</clearOutputDir>
+                    <outputDirectory>${project.build.directory}/generated-sources/xjc</outputDirectory>
+                    <clearOutputDir>true</clearOutputDir>
                     <sources>
                         <source>${project.basedir}/src/main/resources/xsd/hello.xsd</source>
                     </sources>
                 </configuration>
+            </plugin>
+
+            <!-- Add generated sources to the compilation path -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/xjc</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
