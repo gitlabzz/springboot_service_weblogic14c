@@ -15,24 +15,19 @@ import org.springframework.xml.xsd.XsdSchema;
 @Configuration
 public class WebServiceConfig {
 
-    private ServletRegistrationBean<MessageDispatcherServlet> createServletRegistration(
-            ApplicationContext ctx, String path) {
+    @Bean
+    public ServletRegistrationBean<MessageDispatcherServlet> springWsServlet(ApplicationContext ctx) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(ctx);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, path);
+
+        ServletRegistrationBean<MessageDispatcherServlet> reg = new ServletRegistrationBean<>(servlet, "/services/*");
+        reg.setName("spring-ws");   // unique in the whole web-app
+        reg.setLoadOnStartup(1);    // initialise before MVC servlet
+        return reg;
     }
 
-    @Bean
-    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet11(ApplicationContext ctx) {
-        return createServletRegistration(ctx, "/services/HelloService/*");
-    }
-
-    @Bean
-    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet12(ApplicationContext ctx) {
-        return createServletRegistration(ctx, "/services/HelloService12/*");
-    }
-
+    // ---- WSDL 1.1 -------------
     @Bean(name = "HelloService")
     public DefaultWsdl11Definition helloWsdl(XsdSchema schema) {
         DefaultWsdl11Definition def = new DefaultWsdl11Definition();
@@ -43,6 +38,7 @@ public class WebServiceConfig {
         return def;
     }
 
+    // ---- WSDL 1.2 -------------
     @Bean(name = "HelloService12")
     public DefaultWsdl11Definition helloWsdl12(XsdSchema schema) {
         DefaultWsdl11Definition def = new DefaultWsdl11Definition();

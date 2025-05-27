@@ -37,6 +37,9 @@ WSDL is available by appending `?wsdl` to either endpoint.
 
 ## Example Request
 
+http://server-host:port/hello/services/HelloService.wsdl
+http://server-host:port/hello/services/HelloService12.wsdl
+
 ```
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="http://example.com/hello">
   <soapenv:Header/>
