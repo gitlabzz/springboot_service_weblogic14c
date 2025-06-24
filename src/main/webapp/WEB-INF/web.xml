@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         version="4.0">
+
+    <display-name>Spring Boot WebLogic14c Service</display-name>
+
+    <!-- secure all Hello WS URLs -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>hello-secure</web-resource-name>
+            <url-pattern>/hello/services/*</url-pattern>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>cert-user</role-name>   <!-- our generic role -->
+        </auth-constraint>
+
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!-- declare the role so the container knows it -->
+    <security-role>
+        <role-name>cert-user</role-name>
+    </security-role>
+
+    <login-config>
+        <auth-method>CLIENT-CERT</auth-method>
+    </login-config>
+</web-app>

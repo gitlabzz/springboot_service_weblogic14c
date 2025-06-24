@@ -3,11 +3,19 @@
         xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-web-app"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app
-        http://xmlns.oracle.com/weblogic/weblogic-web-app/1.4/weblogic-web-app.xsd">
+                        http://xmlns.oracle.com/weblogic/weblogic-web-app/1.4/weblogic-web-app.xsd">
 
     <wls:context-root>/hello</wls:context-root>
+
     <wls:container-descriptor>
         <wls:prefer-web-inf-classes>true</wls:prefer-web-inf-classes>
     </wls:container-descriptor>
+    
+
+    <!-- Map every authenticated client cert to the cert-user role -->
+    <wls:security-role-assignment>
+        <wls:role-name>cert-user</wls:role-name>
+        <wls:principal-name>**</wls:principal-name>   <!-- any virtual user -->
+    </wls:security-role-assignment>
 
 </wls:weblogic-web-app>
