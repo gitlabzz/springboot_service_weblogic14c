@@ -71,7 +71,8 @@ for s in cmo.getServers():
         tw,enf = ssl.isTwoWaySSLEnabled(), ssl.isClientCertificateEnforced()
         if must:
             (ok if tw  else fl)('SSL TwoWay', str(tw))
-            (ok if not enf else fl)('SSL ClientCertEnforced', str(enf))
+            # *** expect Enforced == True for server-level SSL ***
+            (ok if enf else fl)('SSL ClientCertEnforced', str(enf))
         else:
             na('SSL TwoWay / Enforced')
 

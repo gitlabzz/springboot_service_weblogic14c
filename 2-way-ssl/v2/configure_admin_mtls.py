@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # $ORACLE_HOME/oracle_common/common/bin/wlst.sh  configure_admin_mtls.py
 # ---------------------------------------------------------------------------
 #  WebLogic 14c  – enable X.509 identity assertion & virtual users

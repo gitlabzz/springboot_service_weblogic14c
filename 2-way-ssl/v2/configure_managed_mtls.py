@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # $ORACLE_HOME/oracle_common/common/bin/wlst.sh  configure_managed_mtls.py
 # ---------------------------------------------------------------------------
 #  Two-Way SSL (optional client cert) for managed14c server
