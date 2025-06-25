@@ -1,0 +1,107 @@
+Weblogic 14c 2-way SSL:
+
+# add entry to the client host /etc/hosts to managed server where application is deployed and running
+echo "192.168.210.147   weblogic.asim.com" | sudo tee -a /etc/hosts
+
+# Deploy the hello service
+
+# HTTP calls should work
+curl http://weblogic.asim.com:8001/hello/services/HelloService12.wsdl
+curl http://weblogic.asim.com:8001/hello/services/HelloService.wsdl
+
+# HTTPS calls should not work
+curl https://weblogic.asim.com:7002/hello/services/HelloService12.wsdl
+curl https://weblogic.asim.com:7002/hello/services/HelloService.wsdl
+
+
+1. Create a Private CA (Certificate Authority): Generate a private key for the CA and a self-signed root certificate. We’ll make it valid for ~10 years for this demo.
+
+# Generate CA private key (2048-bit RSA)
+openssl genrsa -out myCA.key 2048
+
+# Generate a self-signed CA certificate
+openssl req -x509 -new -nodes -key myCA.key -sha256 -days 3650 -out myCA.crt \
+  -subj "/C=AU/ST=NSW/O=DevOrg/OU=DevDept/CN=DevCA" \
+  -addext "basicConstraints=critical,CA:TRUE,pathlen:0" \
+  -addext "keyUsage=critical,keyCertSign,cRLSign"
+
+
+2. Generate Server Certificate (signed by our CA):
+
+openssl req -new -newkey rsa:2048 -nodes -keyout server.key -out server.csr \
+-subj "/C=AU/ST=NSW/O=DevOrg/OU=IT Dept/CN=weblogic.asim.com" \
+-addext "subjectAltName=DNS:weblogic.asim.com"
+
+
+openssl x509 -req -in server.csr -CA myCA.crt -CAkey myCA.key -CAcreateserial \
+-out server.crt -days 365 -sha256 -copy_extensions copy
+
+
+3. Generate Client Certificate (for mutual TLS)
+openssl req -new -newkey rsa:2048 -nodes -keyout client.key -out client.csr \
+  -subj "/C=AU/ST=NSW/O=DevOrg/OU=Clients/CN=client1"
+
+openssl x509 -req -in client.csr -CA myCA.crt -CAkey myCA.key -CAcreateserial \
+  -out client.crt -days 365 -sha256
+
+
+4. Create Keystores for WebLogic
+
+4.1: Prepare Identity PKCS12 (with PassPhrase: wls12345):
+openssl pkcs12 -export -out server-identity.p12 -name servercert -inkey server.key -in server.crt -certfile myCA.crt -passout pass:wls12345
+
+# Verify it contains a PrivateKeyEntry named servercert:
+keytool -list -v -keystore server-identity.p12 -storetype PKCS12 -storepass wls12345 | grep -A1 servercert
+
+
+
+4.2: Prepare Truststore JKS:
+keytool -importcert -alias DevCA -file myCA.crt -keystore truststore.jks -storetype JKS -storepass changeit -noprompt
+
+
+
+5. place server-identity.p12 and truststore.jks in a directory on the server that WebLogic can read
+
+mkdir -p $DOMAIN_HOME/keystores
+cp server-identity.p12 truststore.jks $DOMAIN_HOME/keystores/
+chown dev:dev $DOMAIN_HOME/keystores/*.{p12,jks}
+chmod 600 $DOMAIN_HOME/keystores/*.{p12,jks}
+
+
+
+
+
+
+==============================================================================
+TESTING
+==============================================================================
+
+# You should now see the “Acceptable client certificate CA names” block listing DevCA.
+openssl s_client -connect weblogic.asim.com:7002 -servername weblogic.asim.com -CAfile myCA.crt | grep -A2 "Acceptable client"
+
+# Mutual-TLS handshake (prove that a client certificate is accepted):
+openssl s_client -connect weblogic.asim.com:7002 -CAfile myCA.crt -cert client.crt -key client.key -quiet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

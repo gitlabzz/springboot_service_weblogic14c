@@ -42,12 +42,12 @@ http://server-host:port/hello/services/HelloService12.wsdl
 
 ```
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="http://example.com/hello">
-  <soapenv:Header/>
-  <soapenv:Body>
-    <hel:sayHello>
-      <name>World</name>
-    </hel:sayHello>
-  </soapenv:Body>
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:HelloRequest>
+         <hel:name>client1</hel:name>
+      </hel:HelloRequest>
+   </soapenv:Body>
 </soapenv:Envelope>
 ```
 
