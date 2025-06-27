@@ -1,7 +1,7 @@
 # $ORACLE_HOME/oracle_common/common/bin/wlst.sh configure_2way_ssl.py
 
 # ---------------------------------------------------------------------------
-#  WLST “gold-path” recipe – WebLogic 14c, two-way SSL, one managed server
+#  WLST recipe – WebLogic 14c, two-way SSL, one managed server
 #  --------------------------------------------------------------------------
 #  EXPECTED FILES (already on both hosts):
 #    /home/dev/domains/DEV/keystores/server-identity.p12   password  : wls12345

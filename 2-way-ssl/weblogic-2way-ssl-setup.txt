@@ -76,7 +76,7 @@ chmod 600 $DOMAIN_HOME/keystores/*.{p12,jks}
 TESTING
 ==============================================================================
 
-# You should now see the “Acceptable client certificate CA names” block listing DevCA.
+# should now see the “Acceptable client certificate CA names” block listing DevCA.
 openssl s_client -connect weblogic.asim.com:7002 -servername weblogic.asim.com -CAfile myCA.crt | grep -A2 "Acceptable client"
 
 # Mutual-TLS handshake (prove that a client certificate is accepted):
