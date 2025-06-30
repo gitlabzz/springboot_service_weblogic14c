@@ -89,6 +89,11 @@ openssl s_client -connect weblogic.asim.com:7002 -CAfile myCA.crt -cert client.c
 
 
 
+curl --cacert myCA.crt --cert client.crt --key client.key -H "Content-Type: text/xml" --data @request.xml https://weblogic.asim.com:7002/hello/services/HelloService
+
+
+curl --cacert myCA.crt -H "Content-Type: text/xml" --data @request.xml https://weblogic.asim.com:7002/hello/services/HelloService
+
 
 
 

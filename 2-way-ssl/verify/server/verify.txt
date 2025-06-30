@@ -1,0 +1,22 @@
+# 1. Full certificate dump
+openssl x509 -in server.crt -text -noout
+
+# 2. Verify the certificate chains to our CA (Expect: “server.crt: OK”)
+openssl verify -CAfile myCA.crt server.crt
+
+# 3. Confirm the cert matches its private key (the two MD5 hashes must be identical)
+openssl x509 -noout -modulus -in server.crt | openssl md5
+openssl rsa  -noout -modulus -in server.key | openssl md5
+
+# 4. Show only the SAN extension
+openssl x509 -in server.crt -ext subjectAltName -noout
+
+# 5. List the contents of the identity keystore
+keytool -list -v -keystore server-identity.p12 -storetype PKCS12 -storepass wls12345
+
+# Show the alias and chain length inside server-identity.p12
+keytool -list -v -keystore server-identity.p12 -storetype PKCS12 -storepass wls12345 | egrep 'Alias name|Entry type|Certificate chain length'
+
+
+# Show the aliases in the truststore
+keytool -list -keystore truststore.jks -storepass changeit

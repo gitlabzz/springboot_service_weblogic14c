@@ -1,0 +1,6 @@
+# Without client cert  ==> should FAIL if 2-way SSL is enforced
+openssl s_client -connect weblogic.asim.com:7002 -servername weblogic.asim.com -CAfile myCA.crt -quiet
+
+# With client cert
+openssl s_client -connect weblogic.asim.com:7002 -servername weblogic.asim.com -CAfile myCA.crt -cert client.crt -key client.key -quiet
+
