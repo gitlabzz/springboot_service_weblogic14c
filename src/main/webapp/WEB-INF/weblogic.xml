@@ -12,10 +12,9 @@
     </wls:container-descriptor>
     
 
-    <!-- Map every authenticated client cert to the cert-user role -->
     <wls:security-role-assignment>
         <wls:role-name>cert-user</wls:role-name>
-        <wls:principal-name>**</wls:principal-name>   <!-- any virtual user -->
+        <wls:principal-name>**</wls:principal-name>
     </wls:security-role-assignment>
 
 </wls:weblogic-web-app>

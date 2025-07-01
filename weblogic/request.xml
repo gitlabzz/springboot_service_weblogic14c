@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hel="http://example.com/hello">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <hel:HelloRequest>
+      <hel:name>client1</hel:name>
+    </hel:HelloRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

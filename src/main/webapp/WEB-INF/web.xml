@@ -4,15 +4,15 @@
 
     <display-name>Spring Boot WebLogic14c Service</display-name>
 
-    <!-- secure all Hello WS URLs -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>hello-secure</web-resource-name>
             <url-pattern>/hello/services/*</url-pattern>
+            <http-method>POST</http-method>
         </web-resource-collection>
 
         <auth-constraint>
-            <role-name>cert-user</role-name>   <!-- our generic role -->
+            <role-name>cert-user</role-name>
         </auth-constraint>
 
         <user-data-constraint>
@@ -20,12 +20,12 @@
         </user-data-constraint>
     </security-constraint>
 
-    <!-- declare the role so the container knows it -->
     <security-role>
         <role-name>cert-user</role-name>
     </security-role>
 
     <login-config>
         <auth-method>CLIENT-CERT</auth-method>
+        <realm-name>myrealm</realm-name>
     </login-config>
 </web-app>
