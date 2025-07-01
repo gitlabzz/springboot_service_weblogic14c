@@ -66,11 +66,16 @@ mkdir -p $DOMAIN_HOME/keystores
 cp server-identity.p12 truststore.jks $DOMAIN_HOME/keystores/
 chown dev:dev $DOMAIN_HOME/keystores/*.{p12,jks}
 chmod 600 $DOMAIN_HOME/keystores/*.{p12,jks}
+ll $DOMAIN_HOME/keystores/
 
 
+export ADMIN_USER=weblogic
+export ADMIN_PASS=welcome1
+export ADMIN_HOST=192.168.210.146
+export ADMIN_PORT=7001
 
-
-
+cd /mnt/hgfs/springboot_service_weblogic14c/2-way-ssl/v3/
+$ORACLE_HOME/oracle_common/common/bin/wlst.sh  configure_managed_mtls.py
 
 ==============================================================================
 TESTING

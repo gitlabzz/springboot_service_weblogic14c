@@ -116,7 +116,7 @@ edit(); startEdit()
 for svr, attrs in pre.items():
     if all(v[2] for v in attrs.values()):
         continue
-    print('\nApplying baseline to %s …' % svr)
+    print('\nApplying baseline to %s ...' % svr)
     cd('/Servers/%s' % svr)
     set('KeyStores', KEYSTORE_MODE_EXPECTED)
     set('CustomIdentityKeyStoreFileName',   IDENTITY_P12)
@@ -137,7 +137,7 @@ save(); activate(block='true')
 # ── 5. Restart changed servers ──────────────────────────────────────────────
 changed = [s for s, a in pre.items() if not all(v[2] for v in a.values())]
 for s in changed:
-    print('\nRestarting %s …' % s)
+    print('\nRestarting %s ...' % s)
     shutdown(s, 'Server', ignoreSessions='true', timeOut=60)
     start(s); sleep(10); state(s, 'Server')
 
