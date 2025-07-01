@@ -71,7 +71,7 @@ sel = raw_input('\nApply/verify mTLS on (a)ll or enter comma-separated numbers? 
 targets = managed if sel.lower() in ('', 'a', 'all') else \
           [managed[int(i)-1] for i in sel.split(',')]
 
-# ── 2. Audit routine ────────────────────────────────────────────────────────
+# ── 2. inspect routine ────────────────────────────────────────────────────────
 def inspect(server):
     cd('/Servers/%s' % server)
     data = {
@@ -103,7 +103,7 @@ def show_report(results, title):
             print('  %-14s : %-25s  [%s]' % (k, act_disp, status))
     print('-' * len(title))
 
-# ── 3. Pre-change audit ─────────────────────────────────────────────────────
+# ── 3. Pre-change report ─────────────────────────────────────────────────────
 pre = {s: inspect(s) for s in targets}
 show_report(pre, 'Current mTLS Settings')
 
@@ -141,7 +141,7 @@ for s in changed:
     shutdown(s, 'Server', ignoreSessions='true', timeOut=60)
     start(s); sleep(10); state(s, 'Server')
 
-# ── 6. Post-change audit ────────────────────────────────────────────────────
+# ── 6. Post-change report ────────────────────────────────────────────────────
 post = {s: inspect(s) for s in targets}
 show_report(post, 'Updated mTLS Settings (after restart)')
 
